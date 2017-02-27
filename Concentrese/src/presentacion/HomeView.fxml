@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="435.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacion.HomeController">
+    <children>
+        <Button fx:id="button" layoutX="164.0" layoutY="259.0" onAction="#handleButtonAction" text="PLAY">
+         <font>
+            <Font size="19.0" />
+         </font></Button>
+      <ImageView fitHeight="81.0" fitWidth="365.0" layoutX="28.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/logoGame.png" />
+         </image>
+      </ImageView>
+      <ChoiceBox fx:id="listaObjeto" layoutX="129.0" layoutY="150.0" prefWidth="150.0" />
+      <BorderPane fx:id="panelNotificacion" layoutX="6.0" layoutY="14.0" prefHeight="53.0" prefWidth="420.0" style="-fx-background-color: #ffffaa; -fx-border-color: black; -fx-border-radius: 10;" visible="false">
+         <left>
+            <ImageView fitHeight="38.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@images/alert.png" />
+               </image>
+            </ImageView>
+         </left>
+         <center>
+              <Label fx:id="labelNotificacion" minHeight="16" minWidth="69" prefHeight="38.0" prefWidth="292.0" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </center>
+      </BorderPane>
+    </children>
+</AnchorPane>

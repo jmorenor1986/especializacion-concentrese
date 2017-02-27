@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane"  prefHeight="662.0" prefWidth="687.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacion.TableroController">
+    <stylesheets>
+        <URL value="@/presentacion/estilos/tablero.css" />
+    </stylesheets>
+   <children>
+      <Label layoutX="32.0" layoutY="21.0" prefHeight="29.0" prefWidth="56.0" text="NIVEL:" />
+      <Label fx:id="nivel" layoutX="84.0" layoutY="21.0" prefHeight="29.0" prefWidth="56.0" />
+      <GridPane fx:id="tablaJuego" gridLinesVisible="true" layoutX="300.0" layoutY="127.0" onMouseClicked="#verificaPosicion">
+      </GridPane>
+   </children>
+</AnchorPane>
