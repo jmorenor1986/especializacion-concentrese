@@ -5,24 +5,44 @@
  */
 package presentacion;
 
+import java.util.LinkedList;
+import java.util.List;
 import logica.ConcentreseLogica;
+import modelo.ObjetoImagen;
 
 /**
  *
  * @author john
  */
 public class TableroModelo {
+
     private int filasTablero;
     private int columnasTablero;
     private ConcentreseLogica logica;
     private String urlImagen;
-    public void marcarPosicion(String fila,String columna){
-       this.urlImagen= getLogica().getTablero()[Integer.parseInt(fila)][Integer.parseInt(columna)].getUrl();
+    private boolean valida;
+    private int fila;
+    private int columna;
+
+    public void marcarPosicion(String fila, String columna) {
+        this.urlImagen = getLogica().getTablero()[Integer.parseInt(fila)][Integer.parseInt(columna)].getUrl();
+        if (getLogica().llenarImagen(Integer.parseInt(fila), Integer.parseInt(columna))) {
+            valida = true;
+        } else {
+            valida = false;
+            this.fila = getLogica().getPrimeraImagen().getFila();
+            this.columna = getLogica().getPrimeraImagen().getColumna();
+            this.setUrlImagen("/presentacion/images/pregunta.png");
+            this.getLogica().setPrimeraImagen(null);
+            this.getLogica().setSegundaImagen(null);
+
+        }
+
     }
 
     public ConcentreseLogica getLogica() {
-        if(logica==null){
-            logica= new ConcentreseLogica(this.filasTablero, this.columnasTablero);
+        if (logica == null) {
+            logica = new ConcentreseLogica(this.filasTablero, this.columnasTablero);
         }
         return logica;
     }
@@ -50,10 +70,17 @@ public class TableroModelo {
     public void setUrlImagen(String urlImagen) {
         this.urlImagen = urlImagen;
     }
-    
-    
-    
-    
-    
-    
+
+    public boolean isValida() {
+        return valida;
+    }
+
+    public int getFila() {
+        return fila;
+    }
+
+    public int getColumna() {
+        return columna;
+    }
+
 }

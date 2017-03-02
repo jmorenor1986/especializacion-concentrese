@@ -7,6 +7,9 @@ package presentacion;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -15,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import logica.ConcentreseHilo;
 import modelo.ObjetoLista;
 
 /**
@@ -30,7 +34,7 @@ public class TableroController implements Initializable {
     @FXML
     private Label nivel;
     @FXML
-    private GridPane tablaJuego;
+    public GridPane tablaJuego;
 
     @FXML
     public void verificaPosicion(MouseEvent event) {
@@ -38,8 +42,23 @@ public class TableroController implements Initializable {
         ImageView img = (ImageView) source;
         String[] posiciones = img.getId().split("-");
         getModelo().marcarPosicion(posiciones[0], posiciones[1]);
-        tablaJuego.add(new ImageView(new Image(getModelo().getUrlImagen())), Integer.parseInt(posiciones[0]), Integer.parseInt(posiciones[1]));
+        ImageView imagenAdd = new ImageView();
+        imagenAdd.setImage(new Image(getModelo().getUrlImagen()));
+        imagenAdd.setId(img.getId());
+        if (getModelo().isValida()) {
+            
+            tablaJuego.add(imagenAdd, Integer.parseInt(posiciones[1]), Integer.parseInt(posiciones[0]));
+            ConcentreseHilo hilo = new ConcentreseHilo("Tarea hilo");
+            hilo.setTablaJuegoHilo(tablaJuego);
+            hilo.start();
 
+        } else {
+            ImageView imagenAdd2 = new ImageView();
+            imagenAdd2.setImage(new Image(getModelo().getUrlImagen()));
+            imagenAdd2.setId(getModelo().getColumna() + "-" + getModelo().getFila());
+            tablaJuego.add(imagenAdd, Integer.parseInt(posiciones[1]), Integer.parseInt(posiciones[0]));
+            tablaJuego.add(imagenAdd2, getModelo().getFila(), getModelo().getColumna());
+        }
     }
 
     @Override
@@ -58,7 +77,6 @@ public class TableroController implements Initializable {
         for (int i = 0; i < objetoSeleccionado.getFilas(); i++) {
             for (int j = 0; j < objetoSeleccionado.getColumnas(); j++) {
                 ImageView image = new ImageView(new Image("/presentacion/images/pregunta.png"));
-                tablaJuego.autosize();
                 if (this.objetoSeleccionado.getValor().equalsIgnoreCase("FACIL")) {
                     tablaJuego.setLayoutX(300.0);
                 } else if (this.objetoSeleccionado.getValor().equalsIgnoreCase("MEDIO")) {
@@ -68,7 +86,7 @@ public class TableroController implements Initializable {
                 }
                 tablaJuego.setLayoutY(127.0);
                 image.setId(i + "-" + j);
-                tablaJuego.add(image, i, j);
+                tablaJuego.add(image, j, i);
 
             }
         }
@@ -83,6 +101,14 @@ public class TableroController implements Initializable {
             modelo = new TableroModelo();
         }
         return modelo;
+    }
+
+    public GridPane getTablaJuego() {
+        return tablaJuego;
+    }
+
+    public void setTablaJuego(GridPane tablaJuego) {
+        this.tablaJuego = tablaJuego;
     }
 
 }

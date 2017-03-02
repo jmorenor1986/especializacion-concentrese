@@ -14,9 +14,27 @@ public class ObjetoImagen {
     private String nombre;
     private String url;
     private String estado;
+    private int fila;
+    private int columna;
 
     public int getIdImagen() {
         return idImagen;
+    }
+
+    public int getFila() {
+        return fila;
+    }
+
+    public void setFila(int fila) {
+        this.fila = fila;
+    }
+
+    public int getColumna() {
+        return columna;
+    }
+
+    public void setColumna(int columna) {
+        this.columna = columna;
     }
 
     public void setIdImagen(int idImagen) {
