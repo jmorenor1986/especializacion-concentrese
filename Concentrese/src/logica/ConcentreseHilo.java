@@ -5,10 +5,7 @@
  */
 package logica;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import presentacion.TableroController;
 
 /**
  *
@@ -19,8 +16,7 @@ public class ConcentreseHilo extends Thread {
     private int fila;
     private int columna;
     private boolean validaTiempo;
-    private TableroController controlador;
-    private GridPane tablaJuegoHilo;
+    private String url;
 
     public ConcentreseHilo(String nombreHilo) {
         super(nombreHilo);
@@ -33,9 +29,7 @@ public class ConcentreseHilo extends Thread {
             try {
                 Thread.sleep(2000);
                 validaTiempo = true;
-                 tablaJuegoHilo.add(new ImageView(new Image("/presentacion/images/pregunta.png")), Integer.parseInt(""+columna), Integer.parseInt(""+fila));
-                 controlador.setTablaJuego(tablaJuegoHilo);
-
+                this.url = "/presentacion/images/pregunta.png";
             } catch (Exception e) {
                 e.printStackTrace();
                 validaTiempo = false;
@@ -68,24 +62,13 @@ public class ConcentreseHilo extends Thread {
         this.validaTiempo = validaTiempo;
     }
 
-    public TableroController getControlador() {
-        return controlador;
+    public String getUrl() {
+        return url;
     }
 
-    public void setControlador(TableroController controlador) {
-        this.controlador = controlador;
-    }
-
-    public GridPane getTablaJuegoHilo() {
-        return tablaJuegoHilo;
-    }
-
-    public void setTablaJuegoHilo(GridPane tablaJuegoHilo) {
-        this.tablaJuegoHilo = tablaJuegoHilo;
+    public void setUrl(String url) {
+        this.url = url;
     }
     
     
-    
-    
-
 }

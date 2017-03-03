@@ -5,10 +5,7 @@
  */
 package presentacion;
 
-import java.util.LinkedList;
-import java.util.List;
 import logica.ConcentreseLogica;
-import modelo.ObjetoImagen;
 
 /**
  *
@@ -21,18 +18,26 @@ public class TableroModelo {
     private ConcentreseLogica logica;
     private String urlImagen;
     private boolean valida;
+    private boolean validaHilo;
     private int fila;
     private int columna;
+    private boolean pareja;
 
     public void marcarPosicion(String fila, String columna) {
+        pareja = false;
         this.urlImagen = getLogica().getTablero()[Integer.parseInt(fila)][Integer.parseInt(columna)].getUrl();
         if (getLogica().llenarImagen(Integer.parseInt(fila), Integer.parseInt(columna))) {
             valida = true;
+            pareja = getLogica().isPareja();
+            if (pareja) {
+                this.getLogica().setPrimeraImagen(null);
+                this.getLogica().setSegundaImagen(null);
+            }
         } else {
             valida = false;
             this.fila = getLogica().getPrimeraImagen().getFila();
             this.columna = getLogica().getPrimeraImagen().getColumna();
-            this.setUrlImagen("/presentacion/images/pregunta.png");
+            //this.setUrlImagen("/presentacion/images/pregunta.png");
             this.getLogica().setPrimeraImagen(null);
             this.getLogica().setSegundaImagen(null);
 
@@ -45,6 +50,32 @@ public class TableroModelo {
             logica = new ConcentreseLogica(this.filasTablero, this.columnasTablero);
         }
         return logica;
+    }
+
+    public String validaTiempoImagenes() {
+        String ruta = "";
+        try {
+            if (getLogica().getSegundaImagen() == null && this.pareja == false) {
+                ruta = "/presentacion/images/pregunta.png";
+                getLogica().setPrimeraImagen(null);
+            } else {
+                if (!pareja) {
+                    if (getLogica().getPrimeraImagen().getUrl().equalsIgnoreCase(getLogica().getSegundaImagen().getUrl())) {
+                        System.out.println("si son");
+                        this.getLogica().setPrimeraImagen(null);
+                        this.getLogica().setSegundaImagen(null);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ruta;
+    }
+
+    public boolean validaEstados() {
+
+        return getLogica().validarEstados();
     }
 
     public int getFilasTablero() {
@@ -81,6 +112,26 @@ public class TableroModelo {
 
     public int getColumna() {
         return columna;
+    }
+
+    public boolean isPareja() {
+        return pareja;
+    }
+
+    public void setPareja(boolean pareja) {
+        this.pareja = pareja;
+    }
+
+    public void setValida(boolean valida) {
+        this.valida = valida;
+    }
+
+    public boolean isValidaHilo() {
+        return validaHilo;
+    }
+
+    public void setValidaHilo(boolean validaHilo) {
+        this.validaHilo = validaHilo;
     }
 
 }

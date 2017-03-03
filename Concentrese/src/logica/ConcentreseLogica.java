@@ -23,6 +23,7 @@ public class ConcentreseLogica {
     private ArrayList<Integer> lista;
     private ObjetoImagen primeraImagen;
     private ObjetoImagen segundaImagen;
+    private boolean pareja;
 
     public ConcentreseLogica(int filasTablero, int columnasTablero) {
         this.filasTablero = filasTablero;
@@ -66,6 +67,7 @@ public class ConcentreseLogica {
         if (this.primeraImagen == null) {
             this.primeraImagen = this.tablero[fila][columna];
             this.primeraImagen.setEstado("A");
+            this.pareja=false;
         } else if (this.segundaImagen == null) {
             this.segundaImagen = this.tablero[fila][columna];
             this.segundaImagen.setEstado("A");
@@ -78,13 +80,16 @@ public class ConcentreseLogica {
         if (this.primeraImagen.getIdImagen() == this.segundaImagen.getIdImagen()) {
             System.out.println("misma imagen seleccionada");
             this.segundaImagen = null;
+            this.setPareja(false);
             return false;
         } else if (this.primeraImagen.getUrl().equals(this.segundaImagen.getUrl())) {
             this.primeraImagen.setEstado("C");
+            this.setPareja(true);
             System.out.println("Ok");
             return true;
         } else {
             System.out.println("mal");
+            this.setPareja(false);
             //this.primeraImagen = null;
             //this.segundaImagen = null;
             return false;
@@ -184,5 +189,15 @@ public class ConcentreseLogica {
     public void setSegundaImagen(ObjetoImagen segundaImagen) {
         this.segundaImagen = segundaImagen;
     }
+
+    public boolean isPareja() {
+        return pareja;
+    }
+
+    public void setPareja(boolean pareja) {
+        this.pareja = pareja;
+    }
+    
+    
 
 }
