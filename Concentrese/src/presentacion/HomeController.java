@@ -12,13 +12,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.ObjetoLista;
 
@@ -47,7 +45,7 @@ public class HomeController implements Initializable {
         labelNotificacion.setText(hm.getMensajeNotificacion());
         if ("OK".equalsIgnoreCase(labelNotificacion.getText())) {
             try {
-                abreVentanaTablero(event, (ObjetoLista) listaObjeto.getSelectionModel().getSelectedItem());
+                abreVentanaTablero((ObjetoLista) listaObjeto.getSelectionModel().getSelectedItem());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -61,13 +59,12 @@ public class HomeController implements Initializable {
      *
      * @param event
      */
-    private void abreVentanaTablero(ActionEvent event, ObjetoLista objetoSeleccionado) throws IOException {
+    private void abreVentanaTablero( ObjetoLista objetoSeleccionado) throws IOException {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(TableroController.class.getResource("Tablero.fxml"));
         Parent root = loader.load();
         TableroController controler = loader.getController();
-        System.out.println();
         controler.inicializaVariablesJuego(objetoSeleccionado);
         Scene scene = new Scene(root);
         stage.setResizable(false);
