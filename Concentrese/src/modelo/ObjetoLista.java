@@ -14,12 +14,22 @@ public class ObjetoLista {
     private String valor;
     private int filas;
     private int columnas;
+    private int parejas;
 
-    public ObjetoLista(int clave, String valor, int filas, int columnas) {
+    public ObjetoLista(int clave, String valor, int filas, int columnas, int parejas) {
         this.clave = clave;
         this.valor = valor;
         this.filas = filas;
         this.columnas = columnas;
+        this.parejas = parejas;
+    }
+
+    public int getParejas() {
+        return parejas;
+    }
+
+    public void setParejas(int parejas) {
+        this.parejas = parejas;
     }
 
     

@@ -28,8 +28,7 @@ public class ConcentreseHilo extends Thread {
         while (!this.validaTiempo) {
             try {
                 Thread.sleep(2000);
-                validaTiempo = true;
-                this.url = "/presentacion/images/pregunta.png";
+                System.out.println("hilo");
             } catch (Exception e) {
                 e.printStackTrace();
                 validaTiempo = false;

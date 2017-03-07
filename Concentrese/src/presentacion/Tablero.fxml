@@ -16,5 +16,7 @@
       <Label fx:id="nivel" layoutX="84.0" layoutY="21.0" prefHeight="29.0" prefWidth="56.0" />
       <GridPane fx:id="tablaJuego" gridLinesVisible="true" layoutX="300.0" layoutY="127.0" onMouseClicked="#verificaPosicion">
       </GridPane>
+      <Label fx:id="lbCronometro" layoutX="84.0" layoutY="400.0" prefHeight="300.0" prefWidth="300.0" />
+      <Label fx:id="lbGanador" layoutX="84.0" layoutY="600.0" prefHeight="29.0" prefWidth="600.0" />
    </children>
 </AnchorPane>

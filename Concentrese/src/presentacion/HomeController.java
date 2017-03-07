@@ -40,7 +40,8 @@ public class HomeController implements Initializable {
      */
     @FXML
     private void handleButtonAction(ActionEvent event) {
-        HomeModel hm = new HomeModel();
+        HomeModel hm;
+        hm = new HomeModel();
         this.panelNotificacion.setVisible(hm.verificaNotificacion((ObjetoLista) listaObjeto.getSelectionModel().getSelectedItem()));
         labelNotificacion.setText(hm.getMensajeNotificacion());
         if ("OK".equalsIgnoreCase(labelNotificacion.getText())) {
@@ -82,10 +83,10 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         rb = ResourceBundle.getBundle("presentacion.resources.configuracion");
-        listaObjeto.getItems().add(new ObjetoLista(0, "SELECCIONE NIVEL", 0, 0));
-        listaObjeto.getItems().add(new ObjetoLista(1, "FACIL", Integer.parseInt(rb.getString("nivelFacilFilas")), Integer.parseInt(rb.getString("nivelFacilColumnas"))));
-        listaObjeto.getItems().add(new ObjetoLista(2, "MEDIO", Integer.parseInt(rb.getString("nivelMedioFilas")), Integer.parseInt(rb.getString("nivelMedioColumnas"))));
-        listaObjeto.getItems().add(new ObjetoLista(3, "DIFICIL", Integer.parseInt(rb.getString("nivelDificilFilas")), Integer.parseInt(rb.getString("nivelDificilColumnas"))));
+        listaObjeto.getItems().add(new ObjetoLista(0, "SELECCIONE NIVEL", 0, 0, 0));
+        listaObjeto.getItems().add(new ObjetoLista(1, "FACIL", Integer.parseInt(rb.getString("nivelFacilFilas")), Integer.parseInt(rb.getString("nivelFacilColumnas")), 10));
+        listaObjeto.getItems().add(new ObjetoLista(2, "MEDIO", Integer.parseInt(rb.getString("nivelMedioFilas")), Integer.parseInt(rb.getString("nivelMedioColumnas")), 20));
+        listaObjeto.getItems().add(new ObjetoLista(3, "DIFICIL", Integer.parseInt(rb.getString("nivelDificilFilas")), Integer.parseInt(rb.getString("nivelDificilColumnas")), 30));
         listaObjeto.getSelectionModel().selectFirst();
 
     }

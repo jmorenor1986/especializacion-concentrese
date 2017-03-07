@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import logica.ConcentreseHilo;
 import modelo.ObjetoLista;
 
 /**
@@ -32,6 +35,10 @@ public class TableroController implements Initializable {
     @FXML
     private Label nivel;
     @FXML
+    private Label lbGanador;
+    @FXML
+    private Label lbCronometro;
+    @FXML
     public GridPane tablaJuego;
 
     private Timer timerImagen;
@@ -40,34 +47,50 @@ public class TableroController implements Initializable {
 
     private TimerTask timerTask;
 
-    private boolean validaTiempo;
+    private TimerTask tareaCronometro;
+
+    private Timer timerCronometro;
+
+    private boolean validaTiempo, validaCronometro;
 
     private ImageView imagenAnadir;
 
-    @FXML
-    public void verificaPosicion(MouseEvent event) {
-        Node source = (Node) event.getPickResult().getIntersectedNode();
-        ImageView img = (ImageView) source;
-        String[] posiciones = img.getId().split("-");
-        getModelo().marcarPosicion(posiciones[0], posiciones[1]);
-        ImageView imagenAdd = new ImageView();
-        imagenAdd.setImage(new Image(getModelo().getUrlImagen()));
-        imagenAdd.setId(img.getId());
-        if (getModelo().isPareja()) {
-            getModelo().setValida(false);
-        }
-        if (getModelo().isValida()) {
-            tablaJuego.add(imagenAdd, Integer.parseInt(posiciones[1]), Integer.parseInt(posiciones[0]));
-            this.validaTiempo = true;
-            validarTiempoImagen(Integer.parseInt(posiciones[1]), Integer.parseInt(posiciones[0]));
+    private int segundos, minutos;
+   
+    private String min="", seg="";
 
-        } else {
-            this.validaTiempo = false;
-            ImageView imagenAdd2 = new ImageView();
-            imagenAdd2.setImage(new Image(getModelo().getUrlImagen()));
-            imagenAdd2.setId(getModelo().getColumna() + "-" + getModelo().getFila());
-            tablaJuego.add(imagenAdd, Integer.parseInt(posiciones[1]), Integer.parseInt(posiciones[0]));
-            validarTiempoImagenes(getModelo().getFila(), getModelo().getColumna(), Integer.parseInt(posiciones[1]), Integer.parseInt(posiciones[0]));
+    @FXML
+    public void verificaPosicion(MouseEvent event) throws InterruptedException {
+        if(!getModelo().isOpen())
+        {
+            Node source = (Node) event.getPickResult().getIntersectedNode();
+            ImageView img = (ImageView) source;
+            String[] posiciones = img.getId().split("-");
+            getModelo().marcarPosicion(posiciones[0], posiciones[1]);
+            ImageView imagenAdd = new ImageView();
+            imagenAdd.setImage(new Image(getModelo().getUrlImagen()));
+            imagenAdd.setId(img.getId());
+            if (getModelo().isPareja()) {
+                if (getModelo().isWinner()) {
+                    validaCronometro = false;
+                    lbGanador.setText("*************Felicitaciones eres el ganador. " + lbCronometro.getText() + "***********");
+                }
+                getModelo().setValida(false);
+            }
+
+            if (getModelo().isValida()) {
+                tablaJuego.add(imagenAdd, Integer.parseInt(posiciones[1]), Integer.parseInt(posiciones[0]));
+                this.validaTiempo = true;
+                validarTiempoImagen(Integer.parseInt(posiciones[1]), Integer.parseInt(posiciones[0]));
+
+            } else {
+                this.validaTiempo = false;
+                ImageView imagenAdd2 = new ImageView();
+                imagenAdd2.setImage(new Image(getModelo().getUrlImagen()));
+                imagenAdd2.setId(getModelo().getColumna() + "-" + getModelo().getFila());
+                tablaJuego.add(imagenAdd, Integer.parseInt(posiciones[1]), Integer.parseInt(posiciones[0]));
+                validarTiempoImagenes(getModelo().getFila(), getModelo().getColumna(), Integer.parseInt(posiciones[1]), Integer.parseInt(posiciones[0]));
+            }
         }
     }
 
@@ -76,6 +99,10 @@ public class TableroController implements Initializable {
         imagenAnadir = new ImageView();
         timerImagen = new Timer();
         timerImagenes = new Timer();
+        validaCronometro = true;
+        inicializaCronometro();
+        timerCronometro = new Timer();
+        timerCronometro.schedule(tareaCronometro, 1000, 1000);
     }
 
     /**
@@ -104,6 +131,7 @@ public class TableroController implements Initializable {
         }
         getModelo().setColumnasTablero(this.objetoSeleccionado.getColumnas());
         getModelo().setFilasTablero(this.objetoSeleccionado.getFilas());
+        getModelo().setParejasTablero(this.objetoSeleccionado.getParejas());
         getModelo().getLogica().llenaTablero();
 
     }
@@ -169,5 +197,29 @@ public class TableroController implements Initializable {
         };
         timerImagenes = new Timer();
         timerImagenes.schedule(timerTask, 2000);
+    }
+ 
+    public void inicializaCronometro(){
+        tareaCronometro = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    if(validaCronometro)
+                    {
+                        segundos++;
+                        if( segundos == 59 )
+                        {
+                            segundos = 0;
+                            minutos++;
+                        }
+                        if( minutos < 10 ) min = "0" + minutos;
+                        else min = Integer.toString(minutos);
+                        if( segundos < 10 ) seg = "0" + segundos;
+                        else seg = Integer.toString(segundos);
+                        lbCronometro.setText("Tiempo: "+min+":"+seg);
+                    }
+                });               
+            }
+        };
     }
 }

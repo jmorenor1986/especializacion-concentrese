@@ -15,6 +15,16 @@ public class TableroModelo {
 
     private int filasTablero;
     private int columnasTablero;
+    private int parejasTablero;
+    private boolean winner;
+
+    public int getParejasTablero() {
+        return parejasTablero;
+    }
+
+    public void setParejasTablero(int parejasTablero) {
+        this.parejasTablero = parejasTablero;
+    }
     private ConcentreseLogica logica;
     private String urlImagen;
     private boolean valida;
@@ -22,13 +32,17 @@ public class TableroModelo {
     private int fila;
     private int columna;
     private boolean pareja;
+    private boolean open;
 
     public void marcarPosicion(String fila, String columna) {
         pareja = false;
+        winner = false;
         this.urlImagen = getLogica().getTablero()[Integer.parseInt(fila)][Integer.parseInt(columna)].getUrl();
         if (getLogica().llenarImagen(Integer.parseInt(fila), Integer.parseInt(columna))) {
             valida = true;
             pareja = getLogica().isPareja();
+            winner = getLogica().isWinner();
+            validateOpen();
             if (pareja) {
                 this.getLogica().setPrimeraImagen(null);
                 this.getLogica().setSegundaImagen(null);
@@ -37,17 +51,23 @@ public class TableroModelo {
             valida = false;
             this.fila = getLogica().getPrimeraImagen().getFila();
             this.columna = getLogica().getPrimeraImagen().getColumna();
+            validateOpen();
             //this.setUrlImagen("/presentacion/images/pregunta.png");
             this.getLogica().setPrimeraImagen(null);
             this.getLogica().setSegundaImagen(null);
 
         }
-
     }
 
+    private void validateOpen()
+    {
+        if(getLogica().getSegundaImagen() != null)   
+                open = true;
+    }
+    
     public ConcentreseLogica getLogica() {
         if (logica == null) {
-            logica = new ConcentreseLogica(this.filasTablero, this.columnasTablero);
+            logica = new ConcentreseLogica(this.filasTablero, this.columnasTablero, this.parejasTablero);
         }
         return logica;
     }
@@ -67,6 +87,7 @@ public class TableroModelo {
                     }
                 }
             }
+            open = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -133,5 +154,19 @@ public class TableroModelo {
     public void setValidaHilo(boolean validaHilo) {
         this.validaHilo = validaHilo;
     }
+    public boolean isWinner() {
+        return winner;
+    }
 
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
+    
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
 }

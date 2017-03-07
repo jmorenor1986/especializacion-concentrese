@@ -16,18 +16,22 @@ public class ConcentreseLogica {
 
     private int filaActual;
     private int columnaActual;
+    private int contadorParejas;
     private final int filasTablero;
     private final int columnasTablero;
+    private final int parejasTablero;
     private ObjetoImagen tablero[][];
     private ArrayList<Integer> listaNumeros;
     private ArrayList<Integer> lista;
     private ObjetoImagen primeraImagen;
     private ObjetoImagen segundaImagen;
     private boolean pareja;
+    private boolean winner;
 
-    public ConcentreseLogica(int filasTablero, int columnasTablero) {
+    public ConcentreseLogica(int filasTablero, int columnasTablero, int parejasTablero) {
         this.filasTablero = filasTablero;
         this.columnasTablero = columnasTablero;
+        this.parejasTablero = parejasTablero;
         tablero = new ObjetoImagen[filasTablero][columnasTablero];
     }
 
@@ -66,11 +70,11 @@ public class ConcentreseLogica {
     public boolean llenarImagen(int fila, int columna) {
         if (this.primeraImagen == null) {
             this.primeraImagen = this.tablero[fila][columna];
-            this.primeraImagen.setEstado("A");
+            //this.primeraImagen.setEstado("A");
             this.pareja=false;
         } else if (this.segundaImagen == null) {
             this.segundaImagen = this.tablero[fila][columna];
-            this.segundaImagen.setEstado("A");
+            //this.segundaImagen.setEstado("A");
             return validarEstados();
         }
         return true;
@@ -83,13 +87,17 @@ public class ConcentreseLogica {
             this.setPareja(false);
             return false;
         } else if (this.primeraImagen.getUrl().equals(this.segundaImagen.getUrl())) {
-            this.primeraImagen.setEstado("C");
+            this.contadorParejas++;
+            if(this.parejasTablero == this.contadorParejas)
+                this.setWinner(true);
+            //this.segundaImagen.setEstado("A");
             this.setPareja(true);
             System.out.println("Ok");
             return true;
         } else {
             System.out.println("mal");
             this.setPareja(false);
+            //this.segundaImagen.setEstado("A");
             //this.primeraImagen = null;
             //this.segundaImagen = null;
             return false;
@@ -198,6 +206,13 @@ public class ConcentreseLogica {
         this.pareja = pareja;
     }
     
+    public boolean isWinner() {
+        return winner;
+    }
+
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
     
 
 }
